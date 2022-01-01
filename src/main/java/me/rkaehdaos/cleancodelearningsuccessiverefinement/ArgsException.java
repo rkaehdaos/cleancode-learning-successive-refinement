@@ -4,3 +4,4 @@ public class ArgsException extends Exception {
     public String errorMessage() {
         return "";
     }
+}
