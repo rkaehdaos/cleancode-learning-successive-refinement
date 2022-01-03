@@ -3,6 +3,8 @@ package me.rkaehdaos.cleancodelearningsuccessiverefinement;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.text.ParseException;
+
 
 public class CleancodeLearningSuccessiveRefinementApplication {
 
@@ -15,6 +17,8 @@ public class CleancodeLearningSuccessiveRefinementApplication {
             executeApplication(logging, port, directory);
         } catch (ArgsException e) {
             System.out.printf("Argument error: %s\n", e.errorMessage());
+        } catch (ParseException e) {
+            System.out.printf("ParseException error: %s\n", e.getMessage());
         }
     }
 
