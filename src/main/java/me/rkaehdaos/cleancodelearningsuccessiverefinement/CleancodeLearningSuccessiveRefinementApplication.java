@@ -14,12 +14,12 @@ public class CleancodeLearningSuccessiveRefinementApplication {
             String directory = arg.getString('d');
             executeApplication(logging, port, directory);
         } catch (ArgsException e) {
-            System.out.printf("Argument error: %s\n", e.errorMessage().toString());
+            System.out.printf("Argument error: %s\n", e.errorMessage());
         }
     }
 
     private static void executeApplication(boolean logging, int port, String directory) {
-
+        System.out.println("logging: "+logging+", port: "+port+", directory: "+directory);
     }
 
 }
