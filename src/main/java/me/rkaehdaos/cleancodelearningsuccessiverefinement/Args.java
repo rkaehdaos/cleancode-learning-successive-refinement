@@ -33,14 +33,14 @@ public class Args {
     }
 
     private boolean parseSchema() {
-        for (String element : schema.split(",m")) {
+        for (String element : schema.split(",")) {
             parseSchemaElement(element);
         }
         return true;
     }
 
     private void parseSchemaElement(String element) {
-        if (element.length() == 1)
+        if (element.length() == 1 && element.equals("l"))
             parseBooleanSchemaElement(element);
     }
 
@@ -88,14 +88,32 @@ public class Args {
     }
 
     public String usage(){
-        if(schema.length()>0) ;
-// TODO 여기부터 p263
-        return "";
+        if(schema.length()>0)
+            return "-["+schema+"]";
+        else
+            return "";
+    }
+
+    public String errorMessage() {
+        if(unexpectedArguments.size()>0){
+            return unexpectedArgumentMessage();
+        } else
+            return "";
+    }
+
+    private String unexpectedArgumentMessage() {
+        StringBuffer message = new StringBuffer("Argument(s) -");
+        for (Character c : unexpectedArguments) {
+            message.append(c);
+        }
+        message.append(" unexpected.");
+
+        return message.toString();
     }
 
 
-    public boolean getBoolean(char l) {
-        return true;
+    public boolean getBoolean(char arg) {
+        return booleanArgs.get(arg);
     }
 
     public int getInt(char c) throws ArgsException {
