@@ -15,7 +15,7 @@ public class Args {
 
     private Set<Character> argsFound = new HashSet<>();
     private int currentArgument;
-    private char errorArgument = '\0';
+    private char errorArgumentId = '\0';
 
     enum ErrorCode {
         OK, MISSING_STRING, INVALID_INTEGER
@@ -128,54 +128,52 @@ public class Args {
 
     private boolean setArgument(char argChar) throws ArgsException {
         ArgumentMarshaler m = marshalers.get(argChar);
-        if (m instanceof BooleanArgumentMarshaler) {
-            setBooleanArg(argChar, true);
-        } else if (m instanceof StringArgumentMarshaler)
-            setStringArg(argChar, "");
-        else if (m instanceof IntegerArgumentMarshaler)
-            setIntegerArg(argChar, 10);
-        else
-            return false;
+        try {
+            if (m instanceof BooleanArgumentMarshaler) {
+                setBooleanArg(m);
+            } else if (m instanceof StringArgumentMarshaler)
+                setStringArg(m);
+            else if (m instanceof IntegerArgumentMarshaler)
+                setIntegerArg(m);
+            else
+                return false;
+        } catch (ArgsException e) {
+            valid = false;
+            errorArgumentId = argChar;
+            throw e;
+        }
         return true;
     }
 
-    private void setIntegerArg(char argChar, int i) throws ArgsException {
+    private void setIntegerArg(ArgumentMarshaler m) throws ArgsException {
         currentArgument++;
         String parameter = null;
         try {
             parameter = args[currentArgument];
-//            integerArgs.get(argChar).setIntegerValue(Integer.parseInt(parameter));
-            integerArgs.get(argChar).set(parameter);
+            m.set(parameter);
         } catch (ArrayIndexOutOfBoundsException e) {
-            valid = false;
-            errorArgument = argChar;
             errorCode = ErrorCode.MISSING_STRING;
             throw new ArgsException();
         } catch (ArgsException e) {
-            valid = false;
-            errorArgument = argChar;
             errorCode = ErrorCode.INVALID_INTEGER;
             throw e;
         }
 
     }
 
-    private void setStringArg(char argChar, String s) throws ArgsException {
+    private void setStringArg(ArgumentMarshaler m) throws ArgsException {
         currentArgument++;
         try {
-//            stringArgs.get(argChar).setStringValue(args[currentArgument]);
-            stringArgs.get(argChar).set(args[currentArgument]);
+            m.set(args[currentArgument]);
         } catch (ArrayIndexOutOfBoundsException e) {
-            valid = false;
-            errorArgument = argChar;
             errorCode = ErrorCode.MISSING_STRING;
             throw new ArgsException();
         }
     }
 
-    private void setBooleanArg(char argChar, boolean value) {
+    private void setBooleanArg(ArgumentMarshaler m) {
         try {
-            booleanArgs.get(argChar).set("ture");
+            m.set("ture");
         } catch (ArgsException e) {}
     }
 
@@ -196,7 +194,7 @@ public class Args {
         } else
             switch (errorCode) {
                 case MISSING_STRING:
-                    return String.format("Could Not find String parameter for -%c.", errorArgument);
+                    return String.format("Could Not find String parameter for -%c.", errorArgumentId);
                 case OK:
                     throw new Exception("TILT: Should not get here.");
             }
