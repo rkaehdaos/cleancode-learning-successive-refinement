@@ -143,11 +143,11 @@ public class Args {
             errorArgument = argChar;
             errorCode = ErrorCode.MISSING_STRING;
             throw new ArgsException();
-        } catch (NumberFormatException e) {
+        } catch (ArgsException e) {
             valid = false;
             errorArgument = argChar;
             errorCode = ErrorCode.INVALID_INTEGER;
-            throw new ArgsException();
+            throw e;
         }
 
     }
@@ -156,7 +156,7 @@ public class Args {
         return integerArgs.containsKey(argChar);
     }
 
-    private void setStringArg(char argChar, String s) {
+    private void setStringArg(char argChar, String s) throws ArgsException {
         currentArgument++;
         try {
 //            stringArgs.get(argChar).setStringValue(args[currentArgument]);
@@ -165,6 +165,7 @@ public class Args {
             valid = false;
             errorArgument = argChar;
             errorCode = ErrorCode.MISSING_STRING;
+            throw new ArgsException();
         }
     }
 
@@ -173,7 +174,9 @@ public class Args {
     }
 
     private void setBooleanArg(char argChar, boolean value) {
-        booleanArgs.get(argChar).set("ture");
+        try {
+            booleanArgs.get(argChar).set("ture");
+        } catch (ArgsException e) {}
     }
 
     private boolean isBoolean(char argChar) {
@@ -221,7 +224,7 @@ public class Args {
 
     public int getInt(char arg) throws ArgsException {
         ArgumentMarshaler am = integerArgs.get(arg);
-        return am == null ? 0 : (int) am.get();
+        return am == null ? 0 : (Integer) am.get();
     }
 
     public String getString(char arg) throws ArgsException {
@@ -230,7 +233,7 @@ public class Args {
     }
 
     private abstract class ArgumentMarshaler {
-        public abstract void set(String s);
+        public abstract void set(String s) throws ArgsException;
 
         public abstract Object get();
     }
@@ -264,11 +267,15 @@ public class Args {
     }
 
     private class IntegerArgumentMarshaler extends ArgumentMarshaler {
-        private Integer integerValue = 0;
+        private int integerValue = 0;
 
         @Override
-        public void set(String s) {
-            integerValue = Integer.valueOf(s);
+        public void set(String s) throws ArgsException {
+            try {
+                integerValue = Integer.parseInt(s);
+            } catch (NumberFormatException e) {
+                throw new ArgsException();
+            }
         }
 
         @Override
