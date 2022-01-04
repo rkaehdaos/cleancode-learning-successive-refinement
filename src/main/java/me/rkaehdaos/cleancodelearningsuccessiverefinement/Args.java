@@ -230,18 +230,14 @@ public class Args {
     }
 
     private abstract class ArgumentMarshaler {
-        protected boolean booleanValue = false;
-        protected String stringValue;
-        protected Integer integerValue;
-
-        //abstract
         public abstract void set(String s);
 
         public abstract Object get();
-
     }
 
     private class BooleanArgumentMarshaler extends ArgumentMarshaler {
+        private boolean booleanValue = false;
+
         @Override
         public void set(String s) {
             booleanValue = true;
@@ -254,6 +250,7 @@ public class Args {
     }
 
     private class StringArgumentMarshaler extends ArgumentMarshaler {
+        private String stringValue = "";
 
         @Override
         public void set(String s) {
@@ -267,6 +264,8 @@ public class Args {
     }
 
     private class IntegerArgumentMarshaler extends ArgumentMarshaler {
+        private Integer integerValue = 0;
+
         @Override
         public void set(String s) {
             integerValue = Integer.valueOf(s);
