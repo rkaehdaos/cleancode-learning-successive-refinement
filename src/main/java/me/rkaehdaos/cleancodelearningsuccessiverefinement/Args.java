@@ -11,6 +11,8 @@ public class Args {
     private Map<Character, ArgumentMarshaler> booleanArgs = new HashMap<>();
     private Map<Character, ArgumentMarshaler> stringArgs = new HashMap<>();
     private Map<Character, ArgumentMarshaler> integerArgs = new HashMap<>();
+    private Map<Character, ArgumentMarshaler> marshalers = new HashMap<>();
+
     private Set<Character> argsFound = new HashSet<>();
     private int currentArgument;
     private char errorArgument = '\0';
@@ -67,7 +69,9 @@ public class Args {
     }
 
     private void parseIntegerSchemaElement(char elementId) {
-        integerArgs.put(elementId, new IntegerArgumentMarshaler());
+        IntegerArgumentMarshaler m = new IntegerArgumentMarshaler();
+        integerArgs.put(elementId, m);
+        marshalers.put(elementId, m);
     }
 
     private boolean isIntegerSchemaElement(String elementTail) {
@@ -75,7 +79,9 @@ public class Args {
     }
 
     private void parseStringSchemaElement(char elementId) {
-        stringArgs.put(elementId, new StringArgumentMarshaler());
+        StringArgumentMarshaler m = new StringArgumentMarshaler();
+        stringArgs.put(elementId, m);
+        marshalers.put(elementId, m);
     }
 
     private boolean isStringSchemaElement(String elementTail) {
@@ -87,7 +93,9 @@ public class Args {
     }
 
     private void parseBooleanSchemaElement(char elementId) {
-        booleanArgs.put(elementId, new BooleanArgumentMarshaler());
+        BooleanArgumentMarshaler m = new BooleanArgumentMarshaler();
+        booleanArgs.put(elementId, m);
+        marshalers.put(elementId, m);
     }
 
     private boolean parseArguments() throws ArgsException {
