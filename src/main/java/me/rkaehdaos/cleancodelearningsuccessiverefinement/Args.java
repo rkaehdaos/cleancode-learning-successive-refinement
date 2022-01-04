@@ -172,7 +172,7 @@ public class Args {
     }
 
     private void setBooleanArg(char argChar, boolean value) {
-        booleanArgs.get(argChar).setBooleanValue(value);
+        booleanArgs.get(argChar).set("ture");
     }
 
     private boolean isBoolean(char argChar) {
@@ -228,8 +228,8 @@ public class Args {
         return am == null ? "" : am.getStringValue();
     }
 
-    private class ArgumentMarshaler {
-        private boolean booleanValue = false;
+    private abstract class ArgumentMarshaler {
+        protected boolean booleanValue = false;
         private String stringValue;
         private Integer integerValue;
 
@@ -246,11 +246,6 @@ public class Args {
             return integerValue == null ? 0 : integerValue;
         }
 
-        //setter
-        public void setBooleanValue(boolean booleanValue) {
-            this.booleanValue = booleanValue;
-        }
-
         public void setStringValue(String stringValue) {
             this.stringValue = stringValue;
         }
@@ -258,16 +253,32 @@ public class Args {
         public void setIntegerValue(Integer integerValue) {
             this.integerValue = integerValue;
         }
+
+        //abstract
+        public abstract void set(String s);
+
     }
 
     private class BooleanArgumentMarshaler extends ArgumentMarshaler {
+        @Override
+        public void set(String s) {
+            booleanValue = true;
+        }
     }
 
     private class StringArgumentMarshaler extends ArgumentMarshaler {
 
+        @Override
+        public void set(String s) {
+
+        }
     }
 
     private class IntegerArgumentMarshaler extends ArgumentMarshaler {
+        @Override
+        public void set(String s) {
+
+        }
     }
 
 
