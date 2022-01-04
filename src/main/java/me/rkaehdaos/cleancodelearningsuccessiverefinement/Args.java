@@ -202,14 +202,12 @@ public class Args {
         return message.toString();
     }
 
-
     public boolean getBoolean(char arg) {
-        return falseIfNull(booleanArgs.get(arg).getBooleanValue());
+        ArgumentMarshaler am = booleanArgs.get(arg);
+        return am != null && am.getBooleanValue();
     }
 
-    private boolean falseIfNull(Boolean b) {
-        return b == null ? false : b;
-    }
+
 
     public int getInt(char arg) throws ArgsException {
         return ZeroIfNull(integerArgs.get(arg));
