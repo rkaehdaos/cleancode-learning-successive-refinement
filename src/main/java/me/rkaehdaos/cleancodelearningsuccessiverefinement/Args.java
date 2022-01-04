@@ -211,6 +211,7 @@ public class Args {
         return message.toString();
     }
 
+    // TODO : p285부터
     public boolean getBoolean(char arg) {
         ArgumentMarshaler am = booleanArgs.get(arg);
         return am != null && (Boolean) am.get();
