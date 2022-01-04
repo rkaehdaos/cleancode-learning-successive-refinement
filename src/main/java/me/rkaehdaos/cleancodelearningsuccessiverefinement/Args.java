@@ -9,7 +9,7 @@ public class Args {
     private boolean valid = true;
     private Set<Character> unexpectedArguments = new TreeSet<>();
     private Map<Character, ArgumentMarshaler> booleanArgs = new HashMap<>();
-    private Map<Character, String> stringArgs = new HashMap<>();
+    private Map<Character, ArgumentMarshaler> stringArgs = new HashMap<>();
     private Map<Character, Integer> integerArgs = new HashMap<>();
     private Set<Character> argsFound = new HashSet<>();
     private int currentArgument;
@@ -73,8 +73,9 @@ public class Args {
     private boolean isIntegerSchemaElement(String elementTail) {
         return elementTail.equals("#");
     }
+
     private void parseStringSchemaElement(char elementId) {
-        stringArgs.put(elementId, "");
+        stringArgs.put(elementId, new StringArgumentMarshaler());
     }
 
     private boolean isStringSchemaElement(String elementTail) {
@@ -149,7 +150,7 @@ public class Args {
     private void setStringArg(char argChar, String s) {
         currentArgument++;
         try {
-            stringArgs.put(argChar, args[currentArgument]);
+            stringArgs.get(argChar).setStringValue(args[currentArgument]);
         } catch (ArrayIndexOutOfBoundsException e){
             valid=false;
             errorArgument = argChar;
@@ -218,29 +219,37 @@ public class Args {
     }
 
     public String getString(char arg) throws ArgsException {
-        return blankIfNull(stringArgs.get(arg));
-    }
-
-    private String blankIfNull(String s) {
-        return s == null ? "" : s;
+        ArgumentMarshaler am = stringArgs.get(arg);
+        return am == null ? "" : am.getStringValue();
     }
 
     private class ArgumentMarshaler {
         private boolean booleanValue = false;
+        private String stringValue;
 
         //getter
         public boolean getBooleanValue() {
             return booleanValue;
         }
 
+        public String getStringValue() {
+            return stringValue == null ? "" : stringValue;
+        }
+
         //setter
         public void setBooleanValue(boolean booleanValue) {
             this.booleanValue = booleanValue;
         }
+
+        public void setStringValue(String stringValue) {
+            this.stringValue = stringValue;
+        }
     }
 
     private class BooleanArgumentMarshaler extends ArgumentMarshaler{}
-    private class StringArgumentMarshaler extends ArgumentMarshaler{}
+    private class StringArgumentMarshaler extends ArgumentMarshaler{
+
+    }
     private class IntegerArgumentMarshaler extends ArgumentMarshaler{}
 
 
