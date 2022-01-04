@@ -10,6 +10,7 @@ public class Args {
     private Set<Character> unexpectedArguments = new TreeSet<>();
     private Map<Character, Boolean> booleanArgs = new HashMap<>();
     private Map<Character, String> stringArgs = new HashMap<>();
+    private Map<Character, Integer> integerArgs = new HashMap<>();
     private Set<Character> argsFound = new HashSet<>();
     private int currentArgument;
     private char errorArgument = '\0';
@@ -54,8 +55,9 @@ public class Args {
             parseBooleanSchemaElement(elementId);
         else if (isStringSchemaElement(elementTail))
             parseStringSchemaElement(elementId);
+        else if (isIntegerSchemaElement(elementTail))
+            parseIntegerSchemaElement(elementId);
     }
-
 
     private void validateSchemaElementId(char elementId) throws ParseException {
         if (!Character.isLetter(elementId)) {
@@ -64,6 +66,13 @@ public class Args {
         }
     }
 
+    private void parseIntegerSchemaElement(char elementId) {
+        integerArgs.put(elementId, 0);
+    }
+
+    private boolean isIntegerSchemaElement(String elementTail) {
+        return elementTail.equals("#");
+    }
     private void parseStringSchemaElement(char elementId) {
         stringArgs.put(elementId, "");
     }
@@ -79,7 +88,6 @@ public class Args {
     private void parseBooleanSchemaElement(char elementId) {
         booleanArgs.put(elementId, false);
     }
-
 
     private boolean parseArguments() {
         for (currentArgument = 0; currentArgument < args.length; currentArgument++) {
@@ -115,9 +123,27 @@ public class Args {
             setBooleanArg(argChar, true);
         } else if (isString(argChar))
             setStringArg(argChar, "");
+        else if (isInteger(argChar))
+            setIntegerArg(argChar, 10);
         else
             set = false;
         return set;
+    }
+
+    private void setIntegerArg(char argChar, int i) {
+        currentArgument++;
+        try {
+            integerArgs.put(argChar, Integer.valueOf(args[currentArgument]));
+        } catch (ArrayIndexOutOfBoundsException e){
+            valid=false;
+            errorArgument = argChar;
+            errorCode = ErrorCode.MISSING_STRING;
+        }
+
+    }
+
+    private boolean isInteger(char argChar) {
+        return integerArgs.containsKey(argChar);
     }
 
     private void setStringArg(char argChar, String s) {
@@ -182,16 +208,15 @@ public class Args {
     }
 
     private boolean falseIfNull(Boolean b) {
-        return b==null? false: b;
+        return b == null ? false : b;
     }
 
-    public int getInt(char c) throws ArgsException {
-        if (true) {
+    public int getInt(char arg) throws ArgsException {
+        return ZeroIfNull(integerArgs.get(arg));
+    }
 
-        } else {
-            throw new ArgsException();
-        }
-        return 0;
+    private int ZeroIfNull(Integer i) {
+        return i == null ? 0 : i;
     }
 
     public String getString(char arg) throws ArgsException {
@@ -201,6 +226,5 @@ public class Args {
     private String blankIfNull(String s) {
         return s == null ? "" : s;
     }
-
 
 }
