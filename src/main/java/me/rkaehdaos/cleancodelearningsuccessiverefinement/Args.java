@@ -227,4 +227,24 @@ public class Args {
         return s == null ? "" : s;
     }
 
+    private class ArgumentMarshaler {
+        private boolean booleanValue = false;
+
+        //getter
+        public boolean isBooleanValue() {
+            return booleanValue;
+        }
+
+        //setter
+        public void setBooleanValue(boolean booleanValue) {
+            this.booleanValue = booleanValue;
+        }
+    }
+
+    private class BooleanArgumentMarshaler extends ArgumentMarshaler{}
+    private class StringArgumentMarshaler extends ArgumentMarshaler{}
+    private class IntegerArgumentMarshaler extends ArgumentMarshaler{}
+
+
 }
+
