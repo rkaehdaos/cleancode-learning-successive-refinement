@@ -14,7 +14,6 @@ public class Args {
     private int currentArgument;
     private char errorArgument = '\0';
 
-
     enum ErrorCode {
         OK, MISSING_STRING
     }
@@ -166,7 +165,7 @@ public class Args {
             }
         return "";
     }
-// TODO : p266 여기부터
+
     private String unexpectedArgumentMessage() {
         StringBuffer message = new StringBuffer("Argument(s) -");
         for (Character c : unexpectedArguments) {
@@ -179,7 +178,11 @@ public class Args {
 
 
     public boolean getBoolean(char arg) {
-        return booleanArgs.get(arg);
+        return falseIfNull(booleanArgs.get(arg));
+    }
+
+    private boolean falseIfNull(Boolean b) {
+        return b==null? false: b;
     }
 
     public int getInt(char c) throws ArgsException {
@@ -191,13 +194,12 @@ public class Args {
         return 0;
     }
 
-    public String getString(char c) throws ArgsException {
-        if (true) {
+    public String getString(char arg) throws ArgsException {
+        return blankIfNull(stringArgs.get(arg));
+    }
 
-        } else {
-            throw new ArgsException();
-        }
-        return null;
+    private String blankIfNull(String s) {
+        return s == null ? "" : s;
     }
 
 
