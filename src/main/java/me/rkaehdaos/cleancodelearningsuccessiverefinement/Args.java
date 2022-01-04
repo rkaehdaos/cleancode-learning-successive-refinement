@@ -215,7 +215,7 @@ public class Args {
 
     public boolean getBoolean(char arg) {
         ArgumentMarshaler am = booleanArgs.get(arg);
-        return am != null && am.getBooleanValue();
+        return am != null && (Boolean) am.get();
     }
 
     public int getInt(char arg) throws ArgsException {
@@ -232,11 +232,6 @@ public class Args {
         protected boolean booleanValue = false;
         private String stringValue;
         private Integer integerValue;
-
-        //getter
-        public boolean getBooleanValue() {
-            return booleanValue;
-        }
 
         public String getStringValue() {
             return stringValue == null ? "" : stringValue;
@@ -257,12 +252,19 @@ public class Args {
         //abstract
         public abstract void set(String s);
 
+        public abstract Object get();
+
     }
 
     private class BooleanArgumentMarshaler extends ArgumentMarshaler {
         @Override
         public void set(String s) {
             booleanValue = true;
+        }
+
+        @Override
+        public Object get() {
+            return this.booleanValue;
         }
     }
 
@@ -272,12 +274,22 @@ public class Args {
         public void set(String s) {
 
         }
+
+        @Override
+        public Object get() {
+            return null;
+        }
     }
 
     private class IntegerArgumentMarshaler extends ArgumentMarshaler {
         @Override
         public void set(String s) {
 
+        }
+
+        @Override
+        public Object get() {
+            return null;
         }
     }
 
