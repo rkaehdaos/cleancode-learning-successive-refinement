@@ -23,6 +23,10 @@ public class Args {
         return valid;
     }
 
+    public boolean has(char arg){
+        return argsFound.contains(arg);
+    }
+
     private boolean parse() throws  ArgsException {
         if (schema.length() == 0 && argsList.size() == 0)
             return true;
