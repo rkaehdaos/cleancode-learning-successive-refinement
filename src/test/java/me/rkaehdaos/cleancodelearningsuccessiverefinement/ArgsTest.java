@@ -25,6 +25,7 @@ class ArgsTest {
     void testWithNoSchemaButWithOneArgument() throws Exception {
         try {
             Args args = new Args("", new String[]{"-x"});
+            fail("Arg 생성자에서 예외가 떨어져야 함");
         } catch (ArgsException e) {
             assertThat(e.getErrorCode()).isEqualTo(ArgsException.ErrorCode.UNEXPECTED_ARGUMENT);
             assertThat(e.getErrorArgumentId()).isEqualTo('x');
