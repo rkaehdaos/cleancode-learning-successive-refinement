@@ -20,7 +20,7 @@ public class Args {
 
     private ErrorCode errorCode = ErrorCode.OK;
 
-    //생성자
+
     public Args(String schema, String[] args) throws ParseException, ArgsException {
         this.schema = schema;
         this.args = args;
@@ -32,7 +32,6 @@ public class Args {
             return true;
         parseSchema();
         parseArguments();
-//        return unexpectedArguments.size() == 0;
         return valid;
     }
 
@@ -167,7 +166,8 @@ public class Args {
     private void setBooleanArg(ArgumentMarshaler m) {
         try {
             m.set("ture");
-        } catch (ArgsException e) {}
+        } catch (ArgsException e) {
+        }
     }
 
     public int cardinality() {
@@ -206,7 +206,6 @@ public class Args {
 
     public boolean getBoolean(char arg) {
         ArgumentMarshaler am = marshalers.get(arg);
-//        return am != null && (Boolean) am.get();
         boolean b = false;
         try {
             b = am != null && (Boolean) am.get();
@@ -285,7 +284,6 @@ public class Args {
             return integerValue;
         }
     }
-
 
 }
 
