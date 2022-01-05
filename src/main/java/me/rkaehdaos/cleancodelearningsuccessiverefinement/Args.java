@@ -8,7 +8,6 @@ public class Args {
     private String[] args;
     private boolean valid = true;
     private Set<Character> unexpectedArguments = new TreeSet<>();
-    private Map<Character, ArgumentMarshaler> booleanArgs = new HashMap<>();
     private Map<Character, ArgumentMarshaler> stringArgs = new HashMap<>();
     private Map<Character, ArgumentMarshaler> integerArgs = new HashMap<>();
     private Map<Character, ArgumentMarshaler> marshalers = new HashMap<>();
@@ -94,7 +93,6 @@ public class Args {
 
     private void parseBooleanSchemaElement(char elementId) {
         BooleanArgumentMarshaler m = new BooleanArgumentMarshaler();
-        booleanArgs.put(elementId, m);
         marshalers.put(elementId, m);
     }
 
