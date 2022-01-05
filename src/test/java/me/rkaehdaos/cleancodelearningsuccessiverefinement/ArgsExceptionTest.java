@@ -5,6 +5,18 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
 
 class ArgsExceptionTest {
+    @Test()
+    void testOKMessage() throws Exception {
+        //given
+        ArgsException e = new ArgsException(ArgsException.ErrorCode.OK);
+
+        //then
+        assertThatThrownBy(() -> e.errorMessage())
+                .isInstanceOf(Exception.class)
+                .hasMessage("TILT: Should not get here.");
+    }
+
+
     @Test
     void testUnexpectedMessage() throws Exception {
         //given
