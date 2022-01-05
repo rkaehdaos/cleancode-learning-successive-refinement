@@ -43,11 +43,11 @@ public class ArgsException extends Exception {
             case MISSING_STRING:
                 return String.format("문자열 파라미터 -%c를 찾을 수 없음.", errorArgumentId);
             case INVALID_INTEGER:
-                return String.format("Argument -%c는 정수를 기대했지만 %s.", errorArgumentId);
+                return String.format("Argument -%c는 정수를 기대했지만 %s.", errorArgumentId, errorParameter);
             case MISSING_INTEGER:
                 return String.format("정수형 파라미터 -%c를 찾을 수 없음.", errorArgumentId);
             case INVALID_DOUBLE:
-                return String.format("Argument -%c는 double을 기대했지만 %s.", errorArgumentId);
+                return String.format("Argument -%c는 double을 기대했지만 %s.", errorArgumentId, errorParameter);
             case MISSING_DOUBLE:
                 return String.format("double 파라미터 -%c를 찾을 수 없음.", errorArgumentId);
         }
