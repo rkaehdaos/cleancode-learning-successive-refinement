@@ -112,7 +112,7 @@ public class Args {
             if (m instanceof BooleanArgumentMarshaler) {
                 m.set(currentArgument);
             } else if (m instanceof StringArgumentMarshaler)
-                setStringArg(m);
+                m.set(currentArgument);
             else if (m instanceof IntegerArgumentMarshaler)
                 setIntegerArg(m);
         } catch (ArgsException e) {
@@ -134,16 +134,6 @@ public class Args {
         } catch (ArgsException e) {
             errorCode = ErrorCode.INVALID_INTEGER;
             throw e;
-        }
-    }
-
-    private void setStringArg(ArgumentMarshaler m) throws ArgsException {
-
-        try {
-            m.set(currentArgument.next());
-        } catch (NoSuchElementException e) {
-            errorCode = ErrorCode.MISSING_STRING;
-            throw new ArgsException();
         }
     }
 
@@ -242,12 +232,16 @@ public class Args {
 
         @Override
         public void set(Iterator<String> currentArgument) throws ArgsException {
-
+            try {
+                stringValue = currentArgument.next();
+            } catch (NoSuchElementException e) {
+                errorCode = ErrorCode.MISSING_STRING;
+                throw new ArgsException();
+            }
         }
 
         @Override
         public void set(String s) {
-            stringValue = s;
         }
 
         @Override
