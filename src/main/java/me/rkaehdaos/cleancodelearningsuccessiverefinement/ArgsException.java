@@ -21,4 +21,13 @@ public class ArgsException extends Exception {
     public String errorMessage() {
         return "";
     }
+
+    //getter
+    public ErrorCode getErrorCode() {
+        return errorCode;
+    }
+
+    public char getErrorArgumentId() {
+        return errorArgumentId;
+    }
 }

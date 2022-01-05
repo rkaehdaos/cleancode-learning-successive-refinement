@@ -125,19 +125,6 @@ public class Args {
         else
             return "";
     }
-/*
-    public String errorMessage() throws Exception {
-        if (unexpectedArguments.size() > 0) {
-            return unexpectedArgumentMessage();
-        } else
-            switch (errorCode) {
-                case MISSING_STRING:
-                    return String.format("Could Not find String parameter for -%c.", errorArgumentId);
-                case OK:
-                    throw new Exception("TILT: Should not get here.");
-            }
-        return "";
-    }*/
 
     private String unexpectedArgumentMessage() {
         StringBuffer message = new StringBuffer("Argument(s) -");

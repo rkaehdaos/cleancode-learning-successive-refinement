@@ -13,7 +13,7 @@ class ArgsTest {
 
     @Test
     @DisplayName("스키마, 아규먼트 없는 테스트 생성")
-    void testCreateWithNoSchemaOrArguments() throws Exception{
+    void testCreateWithNoSchemaOrArguments() throws Exception {
         // given
         Args args = new Args("", new String[0]);
         // then
@@ -25,11 +25,10 @@ class ArgsTest {
     void testWithNoSchemaButWithOneArgument() throws Exception {
         try {
             Args args = new Args("", new String[]{"-x"});
-        } catch (ArgsException e){
-
+        } catch (ArgsException e) {
+            assertThat(e.getErrorCode()).isEqualTo(ArgsException.ErrorCode.UNEXPECTED_ARGUMENT);
+            assertThat(e.getErrorArgumentId()).isEqualTo('x');
         }
-
-        //then
     }
 
 }
