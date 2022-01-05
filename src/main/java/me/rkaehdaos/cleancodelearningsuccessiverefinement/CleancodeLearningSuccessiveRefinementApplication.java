@@ -17,8 +17,6 @@ public class CleancodeLearningSuccessiveRefinementApplication {
             executeApplication(logging, port, directory);
         } catch (ArgsException e) {
             System.out.printf("Argument error: %s\n", e.errorMessage());
-        } catch (ParseException e) {
-            System.out.printf("ParseException error: %s\n", e.getMessage());
         }
     }
 
