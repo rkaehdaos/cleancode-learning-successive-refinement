@@ -5,10 +5,25 @@ public class ArgsException extends Exception {
     private String errorParameter = "TILT";
     private ErrorCode errorCode = ErrorCode.OK;
 
-    // 생성자
     public ArgsException() { }
+
     public ArgsException(String message) {
         super(message);
+    }
+
+    public ArgsException(ErrorCode errorCode) {
+        this.errorCode = errorCode;
+    }
+
+    public ArgsException(ErrorCode errorCode, String errorParameter) {
+        this.errorCode = errorCode;
+        this.errorParameter = errorParameter;
+    }
+
+    public ArgsException(ErrorCode errorCode, char errorArgumentId, String errorParameter) {
+        this.errorCode = errorCode;
+        this.errorArgumentId = errorArgumentId;
+        this.errorParameter = errorParameter;
     }
 
     public enum ErrorCode {
@@ -46,4 +61,22 @@ public class ArgsException extends Exception {
     public char getErrorArgumentId() {
         return errorArgumentId;
     }
+
+    public String getErrorParameter() {
+        return errorParameter;
+    }
+
+    //setter
+    public void setErrorArgumentId(char errorArgumentId) {
+        this.errorArgumentId = errorArgumentId;
+    }
+
+    public void setErrorParameter(String errorParameter) {
+        this.errorParameter = errorParameter;
+    }
+
+    public void setErrorCode(ErrorCode errorCode) {
+        this.errorCode = errorCode;
+    }
+
 }
