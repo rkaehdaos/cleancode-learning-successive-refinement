@@ -38,7 +38,7 @@ class ArgsTest {
         Args args = new Args("x##", new String[]{"-x", "42.3"});
 
         //then
-        assertThat(args.isValid()).isTrue();
+
         assertThat(args.cardinality()).isEqualTo(1);
         assertThat(args.has('x'));
         assertThat(args.getDouble('x')).isEqualTo(42.3);
@@ -47,13 +47,16 @@ class ArgsTest {
     @Test
     void testInvalidDouble() throws Exception {
         //given
-        Args args = new Args("x##", new String[]{"-x", "42.3"});
+        try {
+            Args args = new Args("x##", new String[]{"-x", "forty two"});
+            fail("Arg 생성자에서 예외가 떨어져야 함");
+        } catch (ArgsException e) {
+            assertThat(e.getErrorCode()).isEqualTo(ArgsException.ErrorCode.INVALID_DOUBLE);
+            assertThat(e.getErrorArgumentId()).isEqualTo('x');
+            assertThat(e.getErrorParameter()).isEqualTo("forty two");
+        }
 
-        //then
-        assertThat(args.isValid()).isTrue();
-        assertThat(args.cardinality()).isEqualTo(0);
-        assertThat(args.has('x'));
-        assertThat(args.getDouble('x')).isEqualTo(0.0);
+
     }
 
 }

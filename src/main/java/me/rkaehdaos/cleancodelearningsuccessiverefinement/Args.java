@@ -46,7 +46,7 @@ public class Args {
         else if (elementTail.equals("##"))
             marshalers.put(elementId, new DoubleArgumentMarshaler());
         else
-            throw new ArgsException(ArgsException.ErrorCode.INVALID_FORMAT, elementId, elementTail));
+            throw new ArgsException(ArgsException.ErrorCode.INVALID_FORMAT, elementId, elementTail);
     }
 
     private void validateSchemaElementId(char elementId) throws ArgsException {
@@ -171,8 +171,7 @@ public class Args {
             try {
                 stringValue = currentArgument.next();
             } catch (NoSuchElementException e) {
-                errorCode = ArgsException.ErrorCode.MISSING_STRING;
-                throw new ArgsException();
+                throw new ArgsException(ArgsException.ErrorCode.MISSING_STRING);
             }
         }
 
@@ -193,11 +192,9 @@ public class Args {
                 parameter = currentArgument.next();
                 intValue = Integer.parseInt(parameter);
             } catch (NoSuchElementException e) {
-                errorCode = ArgsException.ErrorCode.MISSING_INTEGER;
-                throw new ArgsException();
+                throw new ArgsException(ArgsException.ErrorCode.MISSING_INTEGER, parameter);
             } catch (NumberFormatException e) {
-                errorCode = ArgsException.ErrorCode.INVALID_INTEGER;
-                throw new ArgsException();
+                throw new ArgsException(ArgsException.ErrorCode.INVALID_INTEGER, parameter);
             }
         }
 
@@ -217,11 +214,9 @@ public class Args {
                 parameter = currentArgument.next();
                 doubleValue = Double.parseDouble(parameter);
             } catch (NoSuchElementException e) {
-                errorCode = ArgsException.ErrorCode.MISSING_DOUBLE;
-                throw new ArgsException();
+                throw new ArgsException(ArgsException.ErrorCode.MISSING_DOUBLE, parameter);
             } catch (NumberFormatException e) {
-                errorCode = ArgsException.ErrorCode.INVALID_DOUBLE;
-                throw new ArgsException();
+                throw new ArgsException(ArgsException.ErrorCode.INVALID_DOUBLE, parameter);
             }
         }
 
