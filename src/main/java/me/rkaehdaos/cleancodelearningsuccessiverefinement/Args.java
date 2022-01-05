@@ -181,13 +181,13 @@ public class Args {
         }
     }
 
-    private abstract class ArgumentMarshaler {
-        public abstract void set(Iterator<String> currentArgument) throws ArgsException;
+    private interface ArgumentMarshaler {
+        void set(Iterator<String> currentArgument) throws ArgsException;
 
-        public abstract Object get();
+        Object get();
     }
 
-    private class BooleanArgumentMarshaler extends ArgumentMarshaler {
+    private class BooleanArgumentMarshaler implements ArgumentMarshaler {
         private boolean booleanValue = false;
 
         @Override
@@ -195,14 +195,13 @@ public class Args {
             booleanValue = true;
         }
 
-
         @Override
         public Object get() {
             return booleanValue;
         }
     }
 
-    private class StringArgumentMarshaler extends ArgumentMarshaler {
+    private class StringArgumentMarshaler implements ArgumentMarshaler {
         private String stringValue = "";
 
         @Override
@@ -222,7 +221,7 @@ public class Args {
         }
     }
 
-    private class IntegerArgumentMarshaler extends ArgumentMarshaler {
+    private class IntegerArgumentMarshaler implements ArgumentMarshaler {
         private int intValue = 0;
 
         @Override
