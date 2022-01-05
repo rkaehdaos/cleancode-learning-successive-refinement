@@ -65,8 +65,7 @@ public class Args {
     }
 
     private void parseIntegerSchemaElement(char elementId) {
-        IntegerArgumentMarshaler m = new IntegerArgumentMarshaler();
-        marshalers.put(elementId, m);
+        marshalers.put(elementId, new IntegerArgumentMarshaler());
     }
 
     private boolean isIntegerSchemaElement(String elementTail) {
@@ -74,8 +73,7 @@ public class Args {
     }
 
     private void parseStringSchemaElement(char elementId) {
-        StringArgumentMarshaler m = new StringArgumentMarshaler();
-        marshalers.put(elementId, m);
+        marshalers.put(elementId, new StringArgumentMarshaler());
     }
 
     private boolean isStringSchemaElement(String elementTail) {
