@@ -5,30 +5,30 @@ import java.util.*;
 
 public class Args {
     private String schema;
-    private String[] args;
     private boolean valid = true;
     private Set<Character> unexpectedArguments = new TreeSet<>();
     private Map<Character, ArgumentMarshaler> marshalers = new HashMap<>();
-
     private Set<Character> argsFound = new HashSet<>();
-    private int currentArgument;
+    private Iterator<String> currentArgument;
     private char errorArgumentId = '\0';
+    private List<String> argsList;
 
     enum ErrorCode {
-        OK, MISSING_STRING, INVALID_INTEGER
+        OK,
+        MISSING_STRING, MISSING_INTEGER,
+        INVALID_INTEGER, UNEXPECTED_ARGUMENT
     }
 
     private ErrorCode errorCode = ErrorCode.OK;
 
-
     public Args(String schema, String[] args) throws ParseException, ArgsException {
         this.schema = schema;
-        this.args = args;
+        argsList = Arrays.asList(args);
         this.valid = parse();
     }
 
     private boolean parse() throws ParseException, ArgsException {
-        if (schema.length() == 0 && args.length == 0)
+        if (schema.length() == 0 && argsList.size() == 0)
             return true;
         parseSchema();
         parseArguments();
@@ -77,8 +77,8 @@ public class Args {
     }
 
     private boolean parseArguments() throws ArgsException {
-        for (currentArgument = 0; currentArgument < args.length; currentArgument++) {
-            String arg = args[currentArgument];
+        for (currentArgument = argsList.iterator(); currentArgument.hasNext(); ) {
+            String arg = currentArgument.next();
             parseArgument(arg);
         }
         return true;
@@ -124,26 +124,24 @@ public class Args {
     }
 
     private void setIntegerArg(ArgumentMarshaler m) throws ArgsException {
-        currentArgument++;
         String parameter = null;
         try {
-            parameter = args[currentArgument];
+            parameter = currentArgument.next();
             m.set(parameter);
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (NoSuchElementException e) {
             errorCode = ErrorCode.MISSING_STRING;
             throw new ArgsException();
         } catch (ArgsException e) {
             errorCode = ErrorCode.INVALID_INTEGER;
             throw e;
         }
-
     }
 
     private void setStringArg(ArgumentMarshaler m) throws ArgsException {
-        currentArgument++;
+
         try {
-            m.set(args[currentArgument]);
-        } catch (ArrayIndexOutOfBoundsException e) {
+            m.set(currentArgument.next());
+        } catch (NoSuchElementException e) {
             errorCode = ErrorCode.MISSING_STRING;
             throw new ArgsException();
         }
