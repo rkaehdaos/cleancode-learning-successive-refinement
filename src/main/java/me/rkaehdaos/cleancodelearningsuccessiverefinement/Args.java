@@ -114,27 +114,13 @@ public class Args {
             } else if (m instanceof StringArgumentMarshaler)
                 m.set(currentArgument);
             else if (m instanceof IntegerArgumentMarshaler)
-                setIntegerArg(m);
+                m.set(currentArgument);
         } catch (ArgsException e) {
             valid = false;
             errorArgumentId = argChar;
             throw e;
         }
         return true;
-    }
-
-    private void setIntegerArg(ArgumentMarshaler m) throws ArgsException {
-        String parameter = null;
-        try {
-            parameter = currentArgument.next();
-            m.set(parameter);
-        } catch (NoSuchElementException e) {
-            errorCode = ErrorCode.MISSING_STRING;
-            throw new ArgsException();
-        } catch (ArgsException e) {
-            errorCode = ErrorCode.INVALID_INTEGER;
-            throw e;
-        }
     }
 
     public int cardinality() {
@@ -255,6 +241,17 @@ public class Args {
 
         @Override
         public void set(Iterator<String> currentArgument) throws ArgsException {
+            String parameter = null;
+            try {
+                parameter = currentArgument.next();
+                set(parameter);
+            } catch (NoSuchElementException e) {
+                errorCode = ErrorCode.MISSING_INTEGER;
+                throw new ArgsException();
+            } catch (ArgsException e) {
+                errorCode = ErrorCode.INVALID_INTEGER;
+                throw e;
+            }
 
         }
 
