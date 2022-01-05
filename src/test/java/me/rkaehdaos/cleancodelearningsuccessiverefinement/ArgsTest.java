@@ -42,7 +42,18 @@ class ArgsTest {
         assertThat(args.cardinality()).isEqualTo(1);
         assertThat(args.has('x'));
         assertThat(args.getDouble('x')).isEqualTo(42.3);
+    }
 
+    @Test
+    void testInvalidDouble() throws Exception {
+        //given
+        Args args = new Args("x##", new String[]{"-x", "42.3"});
+
+        //then
+        assertThat(args.isValid()).isTrue();
+        assertThat(args.cardinality()).isEqualTo(0);
+        assertThat(args.has('x'));
+        assertThat(args.getDouble('x')).isEqualTo(0.0);
     }
 
 }

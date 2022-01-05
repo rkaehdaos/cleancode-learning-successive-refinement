@@ -236,7 +236,7 @@ public class Args {
     }
 
     private class DoubleArgumentMarshaler implements ArgumentMarshaler {
-        private double doubleValue = 0;
+        private double doubleValue = 0.0;
 
         @Override
         public void set(Iterator<String> currentArgument) throws ArgsException {
