@@ -56,6 +56,8 @@ public class Args {
             marshalers.put(elementId, new StringArgumentMarshaler());
         else if (elementTail.equals("#"))
             marshalers.put(elementId, new IntegerArgumentMarshaler());
+        else if (elementTail.equals("##"))
+            marshalers.put(elementId, new DoubleArgumentMarshaler());
         else
             throw new ArgsException(String.format(
                     "Argument: %c has invalid format : %s.", elementId, elementTail));
@@ -160,6 +162,15 @@ public class Args {
         }
     }
 
+    public double getDouble(char arg) {
+        ArgumentMarshaler am = marshalers.get(arg);
+        try {
+            return am == null ? 0 : (Double) am.get();
+        } catch (Exception e) {
+            return 0.0;
+        }
+    }
+
     private interface ArgumentMarshaler {
         void set(Iterator<String> currentArgument) throws ArgsException;
 
@@ -224,5 +235,28 @@ public class Args {
         }
     }
 
+    private class DoubleArgumentMarshaler implements ArgumentMarshaler {
+        private double doubleValue = 0;
+
+        @Override
+        public void set(Iterator<String> currentArgument) throws ArgsException {
+            String parameter = null;
+            try {
+                parameter = currentArgument.next();
+                doubleValue = Double.parseDouble(parameter);
+            } catch (NoSuchElementException e) {
+                errorCode = ArgsException.ErrorCode.MISSING_DOUBLE;
+                throw new ArgsException();
+            } catch (NumberFormatException e) {
+                errorCode = ArgsException.ErrorCode.INVALID_DOUBLE;
+                throw new ArgsException();
+            }
+        }
+
+        @Override
+        public Object get() {
+            return doubleValue;
+        }
+    }
 }
 
