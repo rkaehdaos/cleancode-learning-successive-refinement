@@ -240,7 +240,6 @@ public class Args {
             try {
                 parameter = currentArgument.next();
                 intValue = Integer.parseInt(parameter);
-                set(parameter);
             } catch (NoSuchElementException e) {
                 errorCode = ErrorCode.MISSING_INTEGER;
                 throw new ArgsException();
