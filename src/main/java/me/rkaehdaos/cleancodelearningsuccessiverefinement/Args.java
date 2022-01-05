@@ -8,7 +8,6 @@ public class Args {
     private String[] args;
     private boolean valid = true;
     private Set<Character> unexpectedArguments = new TreeSet<>();
-    private Map<Character, ArgumentMarshaler> integerArgs = new HashMap<>();
     private Map<Character, ArgumentMarshaler> marshalers = new HashMap<>();
 
     private Set<Character> argsFound = new HashSet<>();
@@ -68,7 +67,6 @@ public class Args {
 
     private void parseIntegerSchemaElement(char elementId) {
         IntegerArgumentMarshaler m = new IntegerArgumentMarshaler();
-        integerArgs.put(elementId, m);
         marshalers.put(elementId, m);
     }
 
@@ -219,8 +217,12 @@ public class Args {
     }
 
     public int getInt(char arg) throws ArgsException {
-        ArgumentMarshaler am = integerArgs.get(arg);
-        return am == null ? 0 : (Integer) am.get();
+        ArgumentMarshaler am = marshalers.get(arg);
+        try {
+            return am == null ? 0 : (Integer) am.get();
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     public String getString(char arg) throws ArgsException {
