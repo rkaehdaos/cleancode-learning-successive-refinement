@@ -1,6 +1,5 @@
 package me.rkaehdaos.cleancodelearningsuccessiverefinement;
 
-import java.text.ParseException;
 import java.util.*;
 
 public class Args {
@@ -51,11 +50,11 @@ public class Args {
         char elementId = element.charAt(0);
         String elementTail = element.substring(1);
         validateSchemaElementId(elementId);
-        if (isBooleanSchemaElement(elementTail))
+        if (elementTail.length() == 0)
             marshalers.put(elementId, new BooleanArgumentMarshaler());
-        else if (isStringSchemaElement(elementTail))
+        else if (elementTail.equals("*"))
             marshalers.put(elementId, new StringArgumentMarshaler());
-        else if (isIntegerSchemaElement(elementTail))
+        else if (elementTail.equals("#"))
             marshalers.put(elementId, new IntegerArgumentMarshaler());
         else
             throw new ArgsException(String.format(
@@ -67,18 +66,6 @@ public class Args {
             throw new ArgsException(
                     "Bad Chracter:" + elementId + "in Args format: " + schema);
         }
-    }
-
-    private boolean isIntegerSchemaElement(String elementTail) {
-        return elementTail.equals("#");
-    }
-
-    private boolean isStringSchemaElement(String elementTail) {
-        return elementTail.equals("*");
-    }
-
-    private boolean isBooleanSchemaElement(String elementTail) {
-        return elementTail.length() == 0;
     }
 
     private boolean parseArguments() throws ArgsException {
