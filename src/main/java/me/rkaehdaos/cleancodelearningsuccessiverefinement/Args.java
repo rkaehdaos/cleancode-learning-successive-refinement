@@ -147,10 +147,6 @@ public class Args {
         }
     }
 
-    private void setBooleanArg(ArgumentMarshaler m, Iterator<String> currentArgument) throws ArgsException {
-        m.set("ture");
-    }
-
     public int cardinality() {
         return argsFound.size();
     }
