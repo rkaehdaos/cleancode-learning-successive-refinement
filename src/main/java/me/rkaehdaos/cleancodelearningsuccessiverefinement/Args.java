@@ -232,18 +232,19 @@ public class Args {
     }
 
     private class IntegerArgumentMarshaler extends ArgumentMarshaler {
-        private int integerValue = 0;
+        private int intValue = 0;
 
         @Override
         public void set(Iterator<String> currentArgument) throws ArgsException {
             String parameter = null;
             try {
                 parameter = currentArgument.next();
+                intValue = Integer.parseInt(parameter);
                 set(parameter);
             } catch (NoSuchElementException e) {
                 errorCode = ErrorCode.MISSING_INTEGER;
                 throw new ArgsException();
-            } catch (ArgsException e) {
+            } catch (NumberFormatException e) {
                 errorCode = ErrorCode.INVALID_INTEGER;
                 throw e;
             }
@@ -252,16 +253,11 @@ public class Args {
 
         @Override
         public void set(String s) throws ArgsException {
-            try {
-                integerValue = Integer.parseInt(s);
-            } catch (NumberFormatException e) {
-                throw new ArgsException();
-            }
         }
 
         @Override
         public Object get() {
-            return integerValue;
+            return intValue;
         }
     }
 
