@@ -110,7 +110,7 @@ public class Args {
             return false;
         try {
             if (m instanceof BooleanArgumentMarshaler) {
-                setBooleanArg(m, currentArgument);
+                m.set(currentArgument);
             } else if (m instanceof StringArgumentMarshaler)
                 setStringArg(m);
             else if (m instanceof IntegerArgumentMarshaler)
@@ -215,6 +215,8 @@ public class Args {
     }
 
     private abstract class ArgumentMarshaler {
+        public abstract void set(Iterator<String> currentArgument) throws ArgsException;
+
         public abstract void set(String s) throws ArgsException;
 
         public abstract Object get();
@@ -224,8 +226,13 @@ public class Args {
         private boolean booleanValue = false;
 
         @Override
-        public void set(String s) {
+        public void set(Iterator<String> currentArgument) throws ArgsException {
             booleanValue = true;
+        }
+
+        @Override
+        public void set(String s) {
+
         }
 
         @Override
@@ -236,6 +243,11 @@ public class Args {
 
     private class StringArgumentMarshaler extends ArgumentMarshaler {
         private String stringValue = "";
+
+        @Override
+        public void set(Iterator<String> currentArgument) throws ArgsException {
+
+        }
 
         @Override
         public void set(String s) {
@@ -250,6 +262,11 @@ public class Args {
 
     private class IntegerArgumentMarshaler extends ArgumentMarshaler {
         private int integerValue = 0;
+
+        @Override
+        public void set(Iterator<String> currentArgument) throws ArgsException {
+
+        }
 
         @Override
         public void set(String s) throws ArgsException {
