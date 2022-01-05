@@ -19,6 +19,10 @@ public class Args {
         this.valid = parse();
     }
 
+    public boolean isValid() {
+        return valid;
+    }
+
     private boolean parse() throws  ArgsException {
         if (schema.length() == 0 && argsList.size() == 0)
             return true;
