@@ -8,7 +8,6 @@ public class Args {
     private String[] args;
     private boolean valid = true;
     private Set<Character> unexpectedArguments = new TreeSet<>();
-    private Map<Character, ArgumentMarshaler> stringArgs = new HashMap<>();
     private Map<Character, ArgumentMarshaler> integerArgs = new HashMap<>();
     private Map<Character, ArgumentMarshaler> marshalers = new HashMap<>();
 
@@ -79,7 +78,6 @@ public class Args {
 
     private void parseStringSchemaElement(char elementId) {
         StringArgumentMarshaler m = new StringArgumentMarshaler();
-        stringArgs.put(elementId, m);
         marshalers.put(elementId, m);
     }
 
@@ -226,8 +224,12 @@ public class Args {
     }
 
     public String getString(char arg) throws ArgsException {
-        ArgumentMarshaler am = stringArgs.get(arg);
-        return am == null ? "" : (String) am.get();
+        ArgumentMarshaler am = marshalers.get(arg);
+        try {
+            return am == null ? "" : (String) am.get();
+        } catch (ClassCastException e) {
+            return "";
+        }
     }
 
     private abstract class ArgumentMarshaler {
