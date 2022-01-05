@@ -97,6 +97,7 @@ public class Args {
     public int cardinality() {
         return argsFound.size();
     }
+/*
 
     public String usage() {
         if (schema.length() > 0)
@@ -104,6 +105,7 @@ public class Args {
         else
             return "";
     }
+*/
 
     public boolean getBoolean(char arg) {
         ArgumentMarshaler am = marshalers.get(arg);
