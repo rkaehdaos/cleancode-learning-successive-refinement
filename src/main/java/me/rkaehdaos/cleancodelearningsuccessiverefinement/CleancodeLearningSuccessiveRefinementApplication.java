@@ -8,7 +8,7 @@ import java.text.ParseException;
 
 public class CleancodeLearningSuccessiveRefinementApplication {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         try {
             Args arg = new Args("l,p#,d*", args);
             boolean logging = arg.getBoolean('l');
@@ -17,8 +17,6 @@ public class CleancodeLearningSuccessiveRefinementApplication {
             executeApplication(logging, port, directory);
         } catch (ArgsException e) {
             System.out.printf("Argument error: %s\n", e.errorMessage());
-        } catch (ParseException e) {
-            System.out.printf("ParseException error: %s\n", e.getMessage());
         }
     }
 
