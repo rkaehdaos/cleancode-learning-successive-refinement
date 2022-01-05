@@ -5,12 +5,6 @@ public class ArgsException extends Exception {
     private String errorParameter = "TILT";
     private ErrorCode errorCode = ErrorCode.OK;
 
-    public ArgsException() { }
-
-    public ArgsException(String message) {
-        super(message);
-    }
-
     public ArgsException(ErrorCode errorCode) {
         this.errorCode = errorCode;
     }
@@ -35,7 +29,7 @@ public class ArgsException extends Exception {
 
 
     public String errorMessage() throws Exception {
-        switch(errorCode){
+        switch (errorCode) {
             case OK:
                 throw new Exception("TILT: Should not get here.");
             case UNEXPECTED_ARGUMENT:
@@ -50,8 +44,9 @@ public class ArgsException extends Exception {
                 return String.format("Argument -%c는 double을 기대했지만 %s.", errorArgumentId, errorParameter);
             case MISSING_DOUBLE:
                 return String.format("double 파라미터 -%c를 찾을 수 없음.", errorArgumentId);
+            default:
+                return "";
         }
-        return "";
     }
 
     //getter
@@ -70,14 +65,6 @@ public class ArgsException extends Exception {
     //setter
     public void setErrorArgumentId(char errorArgumentId) {
         this.errorArgumentId = errorArgumentId;
-    }
-
-    public void setErrorParameter(String errorParameter) {
-        this.errorParameter = errorParameter;
-    }
-
-    public void setErrorCode(ErrorCode errorCode) {
-        this.errorCode = errorCode;
     }
 
 }
