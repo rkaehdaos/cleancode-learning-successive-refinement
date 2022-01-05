@@ -55,6 +55,9 @@ public class Args {
             marshalers.put(elementId, new StringArgumentMarshaler());
         else if (isIntegerSchemaElement(elementTail))
             marshalers.put(elementId, new IntegerArgumentMarshaler());
+        else
+            throw new ParseException(String.format(
+                    "Argument: %c has invalid format : %s.", elementId, elementTail), 0);
     }
 
     private void validateSchemaElementId(char elementId) throws ParseException {
