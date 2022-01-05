@@ -92,8 +92,7 @@ public class Args {
     }
 
     private void parseBooleanSchemaElement(char elementId) {
-        BooleanArgumentMarshaler m = new BooleanArgumentMarshaler();
-        marshalers.put(elementId, m);
+        marshalers.put(elementId, new BooleanArgumentMarshaler());
     }
 
     private boolean parseArguments() throws ArgsException {
