@@ -4,43 +4,30 @@ import java.util.*;
 
 public class Args {
     private String schema;
-    private boolean valid = true;
-    private Set<Character> unexpectedArguments = new TreeSet<>();
     private Map<Character, ArgumentMarshaler> marshalers = new HashMap<>();
     private Set<Character> argsFound = new HashSet<>();
     private Iterator<String> currentArgument;
     private List<String> argsList;
-    private ArgsException.ErrorCode errorCode = ArgsException.ErrorCode.OK;
 
     public Args(String schema, String[] args) throws ArgsException {
         this.schema = schema;
         argsList = Arrays.asList(args);
-        this.valid = parse();
-    }
-
-    public boolean isValid() {
-        return valid;
+        parse();
     }
 
     public boolean has(char arg){
         return argsFound.contains(arg);
     }
 
-    private boolean parse() throws  ArgsException {
-        if (schema.length() == 0 && argsList.size() == 0)
-            return true;
-        try {
-            parseSchema();
-            parseArguments();
-        } catch (ArgsException e) {}
-        return valid;
+    private void parse() throws ArgsException {
+        parseSchema();
+        parseArguments();
     }
 
     private boolean parseSchema() throws ArgsException {
         for (String element : schema.split(",")) {
             if (element.length() > 0) {
-                String trimmedElement = element.trim();
-                parseSchemaElement(trimmedElement);
+                parseSchemaElement(element.trim());
             }
         }
         return true;
@@ -59,23 +46,20 @@ public class Args {
         else if (elementTail.equals("##"))
             marshalers.put(elementId, new DoubleArgumentMarshaler());
         else
-            throw new ArgsException(String.format(
-                    "Argument: %c has invalid format : %s.", elementId, elementTail));
+            throw new ArgsException(ArgsException.ErrorCode.INVALID_FORMAT, elementId, elementTail));
     }
 
     private void validateSchemaElementId(char elementId) throws ArgsException {
         if (!Character.isLetter(elementId)) {
-            throw new ArgsException(
-                    "Bad Chracter:" + elementId + "in Args format: " + schema);
+            throw new ArgsException(ArgsException.ErrorCode.INVALID_ARGUMENT_NAME, elementId, null);
         }
     }
 
-    private boolean parseArguments() throws ArgsException {
+    private void parseArguments() throws ArgsException {
         for (currentArgument = argsList.iterator(); currentArgument.hasNext(); ) {
             String arg = currentArgument.next();
             parseArgument(arg);
         }
-        return true;
     }
 
     private void parseArgument(String arg) throws ArgsException {
@@ -93,9 +77,7 @@ public class Args {
         if (setArgument(argChar))
             argsFound.add(argChar);
         else {
-            unexpectedArguments.add(argChar);
-            errorCode = ArgsException.ErrorCode.UNEXPECTED_ARGUMENT;
-            valid = false;
+            throw new ArgsException(ArgsException.ErrorCode.UNEXPECTED_ARGUMENT, argChar, null);
         }
     }
 
@@ -105,11 +87,11 @@ public class Args {
             return false;
         try {
             m.set(currentArgument);
+            return true;
         } catch (ArgsException e) {
-            valid = false;
+            e.setErrorArgumentId(argChar);
             throw e;
         }
-        return true;
     }
 
     public int cardinality() {
@@ -121,16 +103,6 @@ public class Args {
             return "-[" + schema + "]";
         else
             return "";
-    }
-
-    private String unexpectedArgumentMessage() {
-        StringBuffer message = new StringBuffer("Argument(s) -");
-        for (Character c : unexpectedArguments) {
-            message.append(c);
-        }
-        message.append(" unexpected.");
-
-        return message.toString();
     }
 
     public boolean getBoolean(char arg) {
