@@ -184,8 +184,6 @@ public class Args {
     private abstract class ArgumentMarshaler {
         public abstract void set(Iterator<String> currentArgument) throws ArgsException;
 
-        public abstract void set(String s) throws ArgsException;
-
         public abstract Object get();
     }
 
@@ -197,10 +195,6 @@ public class Args {
             booleanValue = true;
         }
 
-        @Override
-        public void set(String s) {
-
-        }
 
         @Override
         public Object get() {
@@ -221,9 +215,6 @@ public class Args {
             }
         }
 
-        @Override
-        public void set(String s) {
-        }
 
         @Override
         public Object get() {
@@ -247,11 +238,6 @@ public class Args {
                 errorCode = ErrorCode.INVALID_INTEGER;
                 throw e;
             }
-
-        }
-
-        @Override
-        public void set(String s) throws ArgsException {
         }
 
         @Override
