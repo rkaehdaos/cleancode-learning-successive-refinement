@@ -8,5 +8,8 @@ cache:
     - '$HOME/.gradle'
 script: "./gradlew clean build"
 
+before_install:
+  - chmod +x gradlew
+
 notifications:
   slack: rkaehdaos:wPhSVIqM14VNeq09LFsuSJcA
