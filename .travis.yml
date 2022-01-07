@@ -12,4 +12,4 @@ before_install:
   - chmod +x gradlew
 
 notifications:
-  slack: rkaehdaos:wPhSVIqM14VNeq09LFsuSJcA
+  slack: rkaehdaos:__SLACK_TOKEN__
