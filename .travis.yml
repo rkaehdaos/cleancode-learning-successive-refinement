@@ -13,3 +13,5 @@ before_install:
 
 notifications:
   slack: rkaehdaos:wPhSVIqM14VNeq09LFsuSJcA
+
+# public이라 Coveralls 관련 추가 필요 없음(아마)
