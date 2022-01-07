@@ -6,10 +6,14 @@ cache:
   directories:
     - '$HOME/.m2/repository'
     - '$HOME/.gradle'
-script: "./gradlew clean build"
 
 before_install:
   - chmod +x gradlew
+
+script: "./gradlew clean build"
+
+after_success:
+  - "./gradlew jacocoTestReport coveralls"
 
 notifications:
   slack: rkaehdaos:__SLACK_TOKEN__
