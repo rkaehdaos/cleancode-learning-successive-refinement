@@ -2,6 +2,8 @@ plugins {
     id 'org.springframework.boot' version '2.6.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'jacoco'
+    id 'com.github.kt3k.coveralls' version '2.12.0'
 }
 
 group = 'me.rkaehdaos'
@@ -28,4 +30,12 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true // coveralls plugin depends on xml format report
+        html.enabled = true
+    }
 }
