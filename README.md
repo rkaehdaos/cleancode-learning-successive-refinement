@@ -2,7 +2,7 @@
 
 [![Java](https://img.shields.io/badge/Java-007396?style=flat-square&logo=Java&logoColor=white)](https://www.oracle.com/java)
 [![Build Pass](https://img.shields.io/travis/com/rkaehdaos/cleancode-learning-successive-refinement/master)](https://github.com/rkaehdaos/cleancode-learning-successive-refinement)
-[![Coverage Status](https://coveralls.io/repos/github/rkaehdaos/cleancode-learning-successive-refinement/badge.svg?branch=cleancode-learning-successive-refinement-%2317)](https://coveralls.io/github/rkaehdaos/cleancode-learning-successive-refinement?branch=cleancode-learning-successive-refinement-%2317)
+[![Coverage Status](https://coveralls.io/repos/github/rkaehdaos/cleancode-learning-successive-refinement/badge.svg?branch=cleancode-learning-successive-refinement-%2317)](https://coveralls.io/github/rkaehdaos/cleancode-learning-successive-refinement?branch=master)
 >ch14의 점진적 개선을 체험하기 위한 학습 테스트
 
  
