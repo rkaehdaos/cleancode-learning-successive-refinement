@@ -14,3 +14,4 @@
 - 변경
   - Travis CI 추가
   - 배지 추가
+  - CoverAlls 적용
